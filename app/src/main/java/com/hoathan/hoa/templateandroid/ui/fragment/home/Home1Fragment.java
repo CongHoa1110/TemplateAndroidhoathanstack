@@ -49,12 +49,11 @@ private Button btnHom1,btnHome2;
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_home1:
-                mainActivity.setCurrenTab(BaseActivity.TabTyte.TAB_Home);
+                mainActivity.setCurrentTab(BaseActivity.TAB_HOME);
                 mainActivity.pushFragment(new Home12Fragment(), true);
                 break;
             case R.id.btn_home2:
-                Toast.makeText(getActivity()
-                        , "2", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity() , "2", Toast.LENGTH_SHORT).show();
                 break;
         }
 

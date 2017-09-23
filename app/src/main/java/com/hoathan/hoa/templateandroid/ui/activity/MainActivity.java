@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.hoathan.hoa.templateandroid.R;
@@ -17,7 +18,7 @@ import com.hoathan.hoa.templateandroid.ui.fragment.host.TabSettingFragment;
 import com.hoathan.hoa.templateandroid.ui.fragment.news.AddFragment;
 
 public class MainActivity extends BaseActivity {
-   private FragmentTabHost fragmentTabHost;
+    private FragmentTabHost fragmentTabHost;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,20 +28,49 @@ public class MainActivity extends BaseActivity {
         fragmentTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
 
         fragmentTabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
-        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("tag1").
-                setIndicator(getTabIndicator(this, "Home", R.drawable.ic_widget_main)), TabHomeFragment.class, null);
+        fragmentTabHost.addTab(fragmentTabHost.newTabSpec(TAB_HOME).
+                setIndicator(getTabIndicator(this, TAB_HOME, R.drawable.ic_widget_main)), TabHomeFragment.class, null);
 
-        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("tag2")
-                .setIndicator(getTabIndicator(this, "Setting", R.drawable.ic_widget_setting)), TabSettingFragment.class, null);
+        fragmentTabHost.addTab(fragmentTabHost.newTabSpec(TAB_SETTING)
+                .setIndicator(getTabIndicator(this, TAB_SETTING, R.drawable.ic_widget_setting)), TabSettingFragment.class, null);
 
-        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("tag3")
-                .setIndicator(getTabIndicator(this, "Add", R.drawable.ic_widget_study)), AddFragment.class, null);
-        setCurrenTab(TabTyte.TAB_Home);
-        pushFragment( new TabHomeFragment() ,true);
-        setCurrenTab(TabTyte.TAB_SETTING);
-        pushFragment(new TabSettingFragment(),true);
-        setCurrenTab(TabTyte.TAB_NEWS);
-        pushFragment(new AddFragment(),true);
+        fragmentTabHost.addTab(fragmentTabHost.newTabSpec(TAB_ADD)
+                .setIndicator(getTabIndicator(this, TAB_ADD, R.drawable.ic_widget_study)), AddFragment.class, null);
+
+        setCurrentTab(TAB_HOME);
+        pushFragment(new TabHomeFragment(), true);
+
+        fragmentTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                setCurrentTab(tabId);
+                if (tabStackMap.get(tabId).size() == 0) {
+                  /*
+                   *    First time this tab is selected. So add first fragment of that tab.
+                   *    Don't need animation, so that argument is false.
+                   *    We are adding a new fragment which is not present in stack. So add to stack is true.
+                   */
+                    if (tabId.equals(TAB_HOME)) {
+                        setCurrentTab(TAB_HOME);
+                        pushFragment(new TabHomeFragment(), true);
+
+                    } else if (tabId.equals(TAB_SETTING)) {
+                        setCurrentTab(TAB_SETTING);
+                        pushFragment(new TabSettingFragment(), true);
+
+                    } else if (tabId.equals(TAB_ADD)) {
+                        setCurrentTab(TAB_ADD);
+                        pushFragment(new AddFragment(), true);
+                    }
+                } else {
+                  /*
+                   *    We are switching tabs, and target tab is already has at least one fragment.
+                   *    No need of animation, no need of stack pushing. Just show the target fragment
+                   */
+                    pushFragment(tabStackMap.get(tabId).lastElement(), false);
+                }
+            }
+        });
 
 
     }

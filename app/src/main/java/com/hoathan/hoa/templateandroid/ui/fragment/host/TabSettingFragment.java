@@ -40,7 +40,7 @@ private Button btnSetting;
 
     @Override
     public void onClick(View view) {
-        mainActivity.setCurrenTab(BaseActivity.TabTyte.TAB_Home);
+        mainActivity.setCurrentTab(BaseActivity.TAB_SETTING);
         mainActivity.pushFragment(new Setting1Fragment(),true);
     }
 }

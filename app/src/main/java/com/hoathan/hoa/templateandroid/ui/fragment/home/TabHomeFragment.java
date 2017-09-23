@@ -44,7 +44,7 @@ public class TabHomeFragment extends BaseFragment implements View.OnClickListene
     }
 
     public void onClick(View view) {
-        MainActivity.setCurrenTab(BaseActivity.TabTyte.TAB_Home);
+        MainActivity.setCurrentTab(BaseActivity.TAB_HOME);
         MainActivity.pushFragment(new Home1Fragment(), true);
     }
 }

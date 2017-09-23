@@ -44,7 +44,7 @@ public class AddFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        mainActivity.setCurrenTab(BaseActivity.TabTyte.TAB_Home);
+        mainActivity.setCurrentTab(BaseActivity.TAB_ADD);
         mainActivity.pushFragment(new Add1Fragment(),true);
 
     }
